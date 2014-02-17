@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class LargeNumberArray implements LargeNumberInterface {
 
-	private final int MAX_DIGIT = 5000;
+	private final int MAX_DIGIT = 100;
 	// this array stores digits backwards. Do not forget about that!!!
 	// not anymore
 	private int[] lDecimal;
@@ -49,7 +49,7 @@ public class LargeNumberArray implements LargeNumberInterface {
 	public void inputValue() {
 		boolean inputValidated = false;
 		Scanner par1 = new Scanner(System.in);
-		System.out.println("Input you large number: ");
+		System.out.print("Input a number>  ");
 		while (!inputValidated) {
 			numDigitsL = 0;
 			numDigitsR = 0;
@@ -114,7 +114,8 @@ public class LargeNumberArray implements LargeNumberInterface {
 				}
 			}
 		}
-
+		//Originally this array was in reverse order
+		//This invert it:
 		{
 			int temp = 0;
 			for (int i = 0; i < (this.numDigitsL) / 2; i++) {
@@ -126,13 +127,16 @@ public class LargeNumberArray implements LargeNumberInterface {
 		this.toNegative();
 		this.removeRZeros();
 	}
+	//Addition of two Large Numbers
+	//including carrying the one, taking one fron next digit, for adding negtive numbers.
 	
 	public void add(LargeNumberInterface par1) {
 		boolean carryOne = false;
 		boolean takeOne = false;
 		int maxNumR = 0;
 		int maxNumL = 0;
-
+		this.isDecimal(true);
+		par1.isDecimal(true);
 		{
 			if (this.numDigitsR > par1.getNumRDigits()) {
 				maxNumR = this.numDigitsR;
@@ -156,7 +160,7 @@ public class LargeNumberArray implements LargeNumberInterface {
 					this.rDecimal[i] -= 1;
 					takeOne = false;
 				}
-				this.rDecimal[i] += par1.getRDigits()[i];
+				this.rDecimal[i] += par1.getRDigits(i);
 				if (this.rDecimal[i] > 9) {
 					this.rDecimal[i] -= 10;
 					carryOne = true;
@@ -187,23 +191,24 @@ public class LargeNumberArray implements LargeNumberInterface {
 					this.lDecimal[i] -= 1;
 					takeOne = false;
 				}
-				this.lDecimal[i] += par1.getLDigits()[i];
+				this.lDecimal[i] += par1.getLDigits(i);
 				if (this.lDecimal[i] > 9) {
 					this.lDecimal[i] -= 10;
 					carryOne = true;
 				}
+				else 
 				if (this.isNegative)
 				{
-					if (this.lDecimal[i] < 0) {
+					if (this.lDecimal[i] < -9) {
 						this.lDecimal[i] += 10;
 						takeOne = true;
 					}
 				}
-				else
-				if (this.lDecimal[i] < -9) {
-					this.lDecimal[i] += 10;
-					takeOne = true;
-				}
+//				else
+//				if (this.lDecimal[i] < -9) {
+//					this.lDecimal[i] += 10;
+//					takeOne = true;
+//				}
 				
 			}
 			if (carryOne)
@@ -228,17 +233,33 @@ public class LargeNumberArray implements LargeNumberInterface {
 		this.toNegative();
 		this.removeRZeros();
 	}
-
+	//Subtraction.
+	//This part is not working.
+	//Spent about 3 hours trying to debug it.
+	//It is capable of subtracting two numbers, but if second number
+	//is larger than the first one, and they have a fraction part
+	//(not integers) it produces complete bul..wrong information
+	
 	public void subtract(LargeNumberInterface par1) {
-		LargeNumberArray var1 = (LargeNumberArray) par1;
+		LargeNumberArray var1 = (LargeNumberArray)par1;
 		var1.negate();
-		this.add(var1);
+		var1.decimalExists = true;
+		this.add(par1);
 		
 	}
 
 	/****************************
 	 * Nothing interesting here *
 	 ****************************/
+	
+	public int uselessMethod(int par1)
+	{
+		return par1;
+	}
+	
+	//retrieving number of positions in either one of the arrays,
+	//and retrieving a digit at a certain position in either one of the arrays
+	//is handled by the next four methods: 
 	public int getNumLDigits() {
 		return this.numDigitsL;
 	}
@@ -247,16 +268,18 @@ public class LargeNumberArray implements LargeNumberInterface {
 		return this.numDigitsR;
 	}
 
-	public int[] getLDigits() {
-		return this.lDecimal;
+	public int getLDigits(int par1) {
+		return this.lDecimal[par1];
 	}
 
-	public int[] getRDigits() {
-		return this.rDecimal;
+	public int getRDigits(int par1) {
+		return this.rDecimal[par1];
 	}
-
+	
+	
+	
 	public void printValue() {
-		System.out.println("Here is your large number: ");
+		//System.out.println("Here is your large number: ");
 		System.out.println(this.toString());
 	}
 
@@ -281,55 +304,68 @@ public class LargeNumberArray implements LargeNumberInterface {
 		}
 		return toOutput;
 	}
-
-	private void removeRZeros()
-	{
-		for(int i = MAX_DIGIT - 1; i >= 0; i--)
-		{
-			if (rDecimal[i]==0)
-			{
-				this.numDigitsR = i + 1;
+	
+	
+	//Slowly going from the last possible right digit, this method
+	//consumes unborn digits (zeros). Implementing that 
+	//ruthless murderer was necessary precaution
+	//caused by fast increase in population of useless
+	//zeros, incapable of providing and storing
+	//any sort of useful information.
+	private void removeRZeros() {
+		for (int i = MAX_DIGIT - 1; i >= 0; i--) {
+			if (rDecimal[i] != 0) {
+				this.numDigitsR = (i + 1);
 				break;
 			}
+			else
+				this.numDigitsR = 0;
 		}
-		if (this.numDigitsR==0)
-		{
+		if (this.numDigitsR == 0) {
 			this.decimalExists = false;
 		}
 	}
-	
-	private void toNegative()
-	{
-		if (isNegative)
-		{
+	//If any number is negative, every digit in this number is negative.
+	//I have no idea, how I managed to realize that, but
+	//it seems to work.
+	//This method turns negative numbers into NEGATIVE!, not just positive with the "-"
+	//in front of it.
+	//Doing opposite for positive numbers.
+	private void toNegative() {
+		if (isNegative) {
 			for (int i = 0; i < numDigitsL; i++) {
-				if (lDecimal[i] >= 0) {
-					lDecimal[i] = 0 - lDecimal[i];
-				}
+
+				lDecimal[i] = 0 - Math.abs(lDecimal[i]);
+
 			}
-			for (int i = 0; i < numDigitsR; i++)
-			{
-				if (rDecimal[i] >= 0) {
-					rDecimal[i] = 0 - rDecimal[i];
-				}
+			for (int i = 0; i < numDigitsR; i++) {
+
+				rDecimal[i] = 0 - Math.abs(rDecimal[i]);
+
 			}
-		}
-		else
-		{
+		} else {
 			for (int i = 0; i < numDigitsL; i++) {
-				if (lDecimal[i] >= 0) {
-					lDecimal[i] = 0 - lDecimal[i];
-				}
+
+				lDecimal[i] = Math.abs(lDecimal[i]);
+
 			}
-			for (int i = 0; i < numDigitsR; i++)
-			{
-				if (rDecimal[i] >= 0) {
-					rDecimal[i] = 0 - rDecimal[i];
-				}
+			for (int i = 0; i < numDigitsR; i++) {
+
+				rDecimal[i] = Math.abs(rDecimal[i]);
+
 			}
 		}
 	}
-
+	
+	//Checks if the number has any digits after decimal point.
+	//no point in drawing that ugly point, if there is nothing
+	//but an ancient horror of nothingness after if.
+	public void isDecimal(boolean par1)
+	{
+		this.decimalExists = par1;
+	}
+	
+	//Turns positive numbers into negative, and vice versa.
 	public void negate()
 	{
 		if (this.isNegative)
@@ -337,6 +373,6 @@ public class LargeNumberArray implements LargeNumberInterface {
 		else
 			this.isNegative = true;
 		this.toNegative();
-		this.printValue();
+		//this.printValue();
 	}
 }

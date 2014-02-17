@@ -11,8 +11,9 @@ public interface LargeNumberInterface {
 
 	abstract public int getNumRDigits();
 
-	abstract public int[] getLDigits();
+	abstract public int getLDigits(int par1);
 
-	abstract public int[] getRDigits();
+	abstract public int getRDigits(int par1);
 
+	abstract public void isDecimal(boolean par1);
 }

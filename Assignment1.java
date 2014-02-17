@@ -11,7 +11,7 @@
 class Assignment1 {
    public static void main (String[] args) {
       LargeNumberArray a, b, c;
-      //LargeNumberString r, s, t;
+      LargeNumberString r, s, t;
 
 
       System.out.println("Array Implementation");
@@ -27,18 +27,18 @@ class Assignment1 {
       a.printValue();
       System.out.println();
 
-      //System.out.println("String Implementation");
-      //r = new LargeNumberString();
-      //s = new LargeNumberString();
-      //t = new LargeNumberString();
-      //r.inputValue();
-      //s.inputValue();
-      //t.inputValue();
-      //r.add(s);
-      //r.printValue();
-      //r.subtract(t);
-      //r.printValue();
-      //System.out.println();
+      System.out.println("String Implementation");
+      r = new LargeNumberString();
+      s = new LargeNumberString();
+      t = new LargeNumberString();
+      r.inputValue();
+      s.inputValue();
+      t.inputValue();
+      r.add(s);
+      r.printValue();
+      r.subtract(t);
+      r.printValue();
+      System.out.println();
 
    }
 }
