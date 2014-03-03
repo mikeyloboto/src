@@ -131,6 +131,8 @@ public class LargeNumberString implements LargeNumberInterface {
 		boolean takeOne = false;
 		int maxNumR = 0;
 		int maxNumL = 0;
+		StringBuilder lOutput = new StringBuilder(this.lDecimal);
+		StringBuilder rOutput = new StringBuilder(this.rDecimal);
 		this.isDecimal(true);
 		par1.isDecimal(true);
 		{

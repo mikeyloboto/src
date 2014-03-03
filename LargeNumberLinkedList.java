@@ -110,7 +110,107 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 
 	@Override
 	public void add(LargeNumberInterface par1) {
-		// TODO Auto-generated method stub
+		boolean carryOne = false;
+		boolean takeOne = false;
+		int maxNumR = 0;
+		int maxNumL = 0;
+		this.isDecimal(true);
+		par1.isDecimal(true);
+		{
+			if (this.numDigitsR > par1.getNumRDigits()) {
+				maxNumR = this.numDigitsR;
+			} else {
+				maxNumR = par1.getNumRDigits();
+			}
+			if (this.numDigitsL > par1.getNumLDigits()) {
+				maxNumL = this.numDigitsL;
+			} else {
+				maxNumL = par1.getNumLDigits();
+			}
+		}
+		{
+			for (int i = maxNumR - 1; i >= 0; i--) {
+				if (carryOne) {
+					this.setL(i, this.getLDigits(i) + 1);
+					carryOne = false;
+				}
+				if (takeOne)
+				{
+					this.setR(i, this.getRDigits(i) - 1);
+					takeOne = false;
+				}
+				this.setR(i, this.getRDigits(i) + par1.getRDigits(i));
+				if (this.getRDigits(i) > 9) {
+					this.setR(i, this.getRDigits(i) - 10);
+					carryOne = true;
+				}
+				if( this.isNegative)
+				{
+					if (this.getRDigits(i) < -9) {
+						this.setR(i, this.getRDigits(i) + 10);
+						takeOne = true;
+					}
+				}
+				else
+				if (this.getRDigits(i) < 0) {
+					this.setR(i, this.getRDigits(i) + 10);
+					takeOne = true;
+				}
+			}
+		}
+		{
+
+			for (int i = 0; i < maxNumL; i++) {
+				if (carryOne) {
+					this.setL(i, this.getLDigits(i) + 1);
+					carryOne = false;
+				}
+				if (takeOne)
+				{
+					this.setL(i, this.getLDigits(i) - 1);
+					takeOne = false;
+				}
+				this.setL(i, this.getLDigits(i) + par1.getLDigits(i));
+				if (this.getLDigits(i) > 9) {
+					this.setL(i, this.getLDigits(i) - 10);
+					carryOne = true;
+				}
+				else 
+				if (this.isNegative)
+				{
+					if (this.getLDigits(i) < -9) {
+						this.setL(i, this.getLDigits(i) + 10);
+						takeOne = true;
+					}
+				}
+//				else
+//				if (this.lDecimal[i] < -9) {
+//					this.lDecimal[i] += 10;
+//					takeOne = true;
+//				}
+				
+			}
+			if (carryOne)
+			{
+				this.numDigitsL+=1;
+				this.setL(numDigitsL - 1, this.getLDigits(numDigitsL - 1) + 1);
+			}
+			if (takeOne)
+			{
+				this.numDigitsL+=1;
+				this.setL(numDigitsL - 1, this.getLDigits(numDigitsL - 1) - 1);
+			}
+			if (this.getLDigits(numDigitsL - 1) < 0)
+			{
+				this.isNegative = true;
+			}
+			else
+			{
+				this.isNegative = false;
+			}
+		}
+		this.toNegative();
+		//this.removeRZeros();
 		
 	}
 

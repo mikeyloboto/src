@@ -12,6 +12,7 @@ class Assignment1 {
    public static void main (String[] args) {
       LargeNumberArray a, b, c;
       LargeNumberString r, s, t;
+      LargeNumberLinkedList u, v, w;
 
 
       System.out.println("Array Implementation");
@@ -38,6 +39,19 @@ class Assignment1 {
       r.printValue();
       r.subtract(t);
       r.printValue();
+      System.out.println();
+      
+      System.out.println("Linked List Implementation");
+      u = new LargeNumberLinkedList();
+      v = new LargeNumberLinkedList();
+      w = new LargeNumberLinkedList();
+      u.inputValue();
+      v.inputValue();
+      w.inputValue();
+      u.add(v);
+      u.printValue();
+      //u.subtract(w);
+     // u.printValue();
       System.out.println();
 
    }
