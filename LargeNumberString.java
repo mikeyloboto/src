@@ -385,4 +385,20 @@ public class LargeNumberString implements LargeNumberInterface {
 		this.lDecimal += "0";
 		this.numDigitsL++;
 	}
+	
+	@Override
+	public void multiplyByTen() {
+		
+		if (decimalExists)
+			this.lDecimal = this.lDecimal + this.rDecimal.charAt(0);
+		else
+		{
+			this.lDecimal += "0";
+		}
+		if (decimalExists)
+		this.rDecimal = this.rDecimal.substring(1);
+		this.numDigitsL += 1;
+		if (this.numDigitsR>0)
+		this.numDigitsR -= 1;
+	}
 }

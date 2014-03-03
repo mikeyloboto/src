@@ -2,7 +2,7 @@
 * COSC 2336.001                 *
 * Spring 2014                   *
 * Dr. Leonard Brown             *
-* Main class for Assignment #1  *
+* Main class for Assignment #2  *
 *                               *
 * This class creates and tests  *
 * several LargeNumber objects.  *
@@ -24,6 +24,8 @@ class Assignment1 {
       c.inputValue();
       a.add(b);
       a.printValue();
+      a.multiplyByTen();
+      a.printValue();
       a.subtract(c);
       a.printValue();
       System.out.println();
@@ -36,6 +38,8 @@ class Assignment1 {
       s.inputValue();
       t.inputValue();
       r.add(s);
+      r.printValue();
+      r.multiplyByTen();
       r.printValue();
       r.subtract(t);
       r.printValue();
@@ -50,8 +54,10 @@ class Assignment1 {
       w.inputValue();
       u.add(v);
       u.printValue();
-      //u.subtract(w);
-     // u.printValue();
+      u.multiplyByTen();
+      u.printValue();
+      u.subtract(w);
+      u.printValue();
       System.out.println();
 
    }

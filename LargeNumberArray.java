@@ -23,7 +23,7 @@ public class LargeNumberArray implements LargeNumberInterface {
 	private int numDigitsL;
 	private int numDigitsR;
 	private boolean isNegative;
-	private boolean decimalExists;
+	boolean decimalExists;
 
 	public LargeNumberArray() {
 		numDigitsL = 0;
@@ -252,10 +252,6 @@ public class LargeNumberArray implements LargeNumberInterface {
 	 * Nothing interesting here *
 	 ****************************/
 	
-	public int uselessMethod(int par1)
-	{
-		return par1;
-	}
 	
 	//retrieving number of positions in either one of the arrays,
 	//and retrieving a digit at a certain position in either one of the arrays
@@ -374,5 +370,27 @@ public class LargeNumberArray implements LargeNumberInterface {
 			this.isNegative = true;
 		this.toNegative();
 		//this.printValue();
+	}
+
+	@Override
+	public void multiplyByTen() {
+		int lastR = this.getRDigits(0);
+		for (int i = 0; i < this.getNumRDigits(); i++)
+		{
+			this.rDecimal[i] = this.rDecimal[i+1];
+		}
+		if (this.numDigitsR > 0)
+		{
+			this.rDecimal[this.getNumRDigits() - 1] = 0;
+		}
+		
+		for (int i = this.getNumLDigits(); i > 0; i--)
+		{
+			this.lDecimal[i] = this.lDecimal[i-1];
+		}
+		this.lDecimal[0] = lastR;
+		
+		this.numDigitsL += 1;
+		this.numDigitsR -= 1;
 	}
 }

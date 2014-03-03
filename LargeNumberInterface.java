@@ -17,6 +17,8 @@ public interface LargeNumberInterface {
 
 	abstract public void isDecimal(boolean par1);
 	
+	abstract public void multiplyByTen();
+	
 	//I greatly recommend using Notepad++ in class, it will make life much easier.
 	//Also I recommend Blind Guardian's album "Nightfall In Meddle-Earth". It is a great fusion
 	//between medieval music and German Power Metal, based on Tolkien's "Silmarillion"

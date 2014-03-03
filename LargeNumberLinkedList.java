@@ -129,7 +129,7 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 			}
 		}
 		{
-			for (int i = maxNumR - 1; i >= 0; i--) {
+			for (int i = maxNumR; i > 0; i--) {
 				if (carryOne) {
 					this.setL(i, this.getLDigits(i) + 1);
 					carryOne = false;
@@ -160,7 +160,7 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 		}
 		{
 
-			for (int i = 0; i < maxNumL; i++) {
+			for (int i = 1; i <= maxNumL; i++) {
 				if (carryOne) {
 					this.setL(i, this.getLDigits(i) + 1);
 					carryOne = false;
@@ -216,12 +216,22 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 
 	@Override
 	public void subtract(LargeNumberInterface x) {
-		// TODO Auto-generated method stub
+		LargeNumberLinkedList var1 = (LargeNumberLinkedList)x;
+		var1.negate();
+		var1.decimalExists = true;
+		this.add(x);
 		
 	}
 
+	private void negate() {
+		if (this.isNegative)
+			this.isNegative = false;
+		else
+			this.isNegative = true;
+		this.toNegative();
+		//this.printValue();
+	}
 	public void printValue() {
-		//System.out.println("Here is your large number: ");
 		System.out.println(this.toString());
 	}
 
@@ -229,12 +239,12 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 		String toOutput = "";
 		if (isNegative)
 			toOutput += "-";
-		for (int i = numDigitsL - 1; i >= 0; i--) {
+		for (int i = numDigitsL; i > 0; i--) {
 			toOutput += Math.abs(getLDigits(i));
 		}
 		if (decimalExists) {
 			toOutput += ".";
-			for (int i = 0; i < numDigitsR; i++) {
+			for (int i = 1; i <= numDigitsR; i++) {
 				toOutput += Math.abs(getRDigits(i));
 			}
 		}
@@ -305,28 +315,46 @@ public class LargeNumberLinkedList implements LargeNumberInterface {
 	
 	private void toNegative() {
 		if (isNegative) {
-			for (int i = 0; i < numDigitsL; i++) {
+			for (int i = 1; i <= numDigitsL; i++) {
 
 				setL(i, 0 - Math.abs(getLDigits(i)));
 
 			}
-			for (int i = 0; i < numDigitsR; i++) {
+			for (int i = 1; i <= numDigitsR; i++) {
 
 				setR(i, 0 - Math.abs(getRDigits(i)));
 
 			}
 		} else {
-			for (int i = 0; i < numDigitsL; i++) {
+			for (int i = 1; i <= numDigitsL; i++) {
 
 				setL(i, Math.abs(getLDigits(i)));
 
 			}
-			for (int i = 0; i < numDigitsR; i++) {
+			for (int i = 1; i <= numDigitsR; i++) {
 
 				setR(i, Math.abs(getRDigits(i)));
 
 			}
 		}
+	}
+	@Override
+	public void multiplyByTen() {
+		int lastR = this.getRDigits(0);
+		for (int i = 1; i < this.getNumRDigits(); i++)
+		{
+			this.setR(i, this.getRDigits(i+1));
+		}
+		this.setR(this.getNumRDigits(), 0);
+		
+		for (int i = this.getNumLDigits(); i > 0; i--)
+		{
+			this.setL(i, this.getLDigits(i-1));
+		}
+		this.setL(0, lastR);
+		
+		this.numDigitsL += 1;
+		this.numDigitsR -= 1;
 	}
 
 }
